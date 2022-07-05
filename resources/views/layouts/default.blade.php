@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>@yeild('title',"Weibo App") - Laravel Weibo</title>
+  <title>@yield('title',"Weibo App") - Laravel Weibo</title>
 </head>
 <body>
   @yield('content')
