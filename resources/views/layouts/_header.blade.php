@@ -16,8 +16,9 @@
             <form action="{{ route('logout') }}" method="POST">
               {{ csrf_field() }}
               {{ method_field('DELETE') }}
-            </form>
+            
             <button class="btn btn-block btn-danger" type="submit" name="button">退出</button>
+          </form>
           </a>
           @else
       <li class="nav-item"><a class="nav-link" href="{{ route('help') }}">帮助</a></li>
