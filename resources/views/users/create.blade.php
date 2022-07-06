@@ -38,4 +38,3 @@
 </div>
 @stop
 
-{{ old('name') }}
