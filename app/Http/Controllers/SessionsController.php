@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 
 class SessionsController extends Controller
 {
@@ -19,7 +20,7 @@ class SessionsController extends Controller
                 'password' => 'required'
             ]
         );
-        if(Auth::attempt($creadentials)){
+        if(Auth::attempt($creadentials,$request->has('remember'))){
             return redirect()->route('users.show',[Auth::user()]);
         }else{
             session()->flash('danger', '很抱歉，您的邮箱和密码不匹配');
