@@ -13,6 +13,8 @@ class UsersController extends Controller
     {
         $this->middleware('auth', ['except' => ['show', 'create', 'store', 'index', 'confirmEmail']]);
         $this->middleware('guest', ['only' => ['create']]);
+        $this->middleware('throttle:10,60',['only'=>['store']]);
+
     }
     public function index()
     {
