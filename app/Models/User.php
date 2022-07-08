@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Str;
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -44,14 +45,14 @@ class User extends Authenticatable
     public static function boot()
     {
         parent::boot();
-        static::creating(function ($user){
+        static::creating(function ($user) {
             $user->activation_token = Str::random(10);
         });
     }
-    public function gravatar($size = '100',$clink="http://www.gravatar.com/avatar/")
+    public function gravatar($size = '100', $clink = "http://www.gravatar.com/avatar/")
     {
         $hash = md5(strtolower(trim($this->attributes['email'])));
-        return $clink.$hash.'?s='.$size;
+        return $clink . $hash . '?s=' . $size;
     }
     public function statuses()
     {
@@ -59,7 +60,32 @@ class User extends Authenticatable
     }
     public function feed()
     {
-        return $this->statuses()->orderBy('created_at','desc');
+        return $this->statuses()->orderBy('created_at', 'desc');
     }
-
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'followers', 'user_id', 'follower_id');
+    }
+    public function followings()
+    {
+        return $this->belongsToMany(User::class, 'followers', 'follower_id', 'user_id');
+    }
+    public function follow($user_ids)
+    {
+        if (!is_array($user_ids)) {
+            $user_ids = compact('user_ids');
+        }else{
+            $this->followings()->sync($user_ids,false);
+        }
+    }
+    public function unfollow($user_ids){
+        if (!is_array($user_ids)) {
+            $user_ids = compact('user_ids');
+        }else{
+            $this->followings()->detach($user_ids);
+        }
+    }
+    public function isFollowing($user_ids){
+        return $this->followings->contains($user_ids);
+    }
 }
