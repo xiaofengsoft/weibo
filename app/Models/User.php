@@ -74,18 +74,19 @@ class User extends Authenticatable
     {
         if (!is_array($user_ids)) {
             $user_ids = compact('user_ids');
-        }else{
-            $this->followings()->sync($user_ids,false);
         }
+
+        $this->followings()->sync($user_ids, false);
     }
-    public function unfollow($user_ids){
+    public function unfollow($user_ids)
+    {
         if (!is_array($user_ids)) {
             $user_ids = compact('user_ids');
-        }else{
-            $this->followings()->detach($user_ids);
         }
+        $this->followings()->detach($user_ids);
     }
-    public function isFollowing($user_ids){
+    public function isFollowing($user_ids)
+    {
         return $this->followings->contains($user_ids);
     }
 }
