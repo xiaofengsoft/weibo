@@ -53,5 +53,9 @@ class User extends Authenticatable
         $hash = md5(strtolower(trim($this->attributes['email'])));
         return $clink.$hash.'?s='.$size;
     }
+    public function statuses()
+    {
+        return $this->hasMany(Status::class);
+    }
 
 }
